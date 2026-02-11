@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Verificación · Viaje Interior</title>
+  <style>
+    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:#0b0b10;color:#f3ead6;min-height:100vh;display:grid;place-items:center;padding:18px}
+    .card{max-width:780px;width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:22px;padding:16px;box-shadow:0 20px 70px rgba(0,0,0,.45);backdrop-filter:blur(12px)}
+    h1{margin:0;font-size:22px}
+    p{opacity:.9;line-height:1.6}
+    .badge{display:inline-flex;padding:8px 12px;border-radius:999px;border:1px solid rgba(202,164,75,.45);
+      background:linear-gradient(180deg, rgba(202,164,75,.22), rgba(202,164,75,.08));font-size:12px;letter-spacing:.6px;text-transform:uppercase}
+    .ok{color:#b8ffcf}
+    .bad{color:#ffb8b8}
+    .row{margin-top:12px;padding:12px;border-radius:16px;background:rgba(0,0,0,.20);border:1px solid rgba(255,255,255,.10)}
+    code{font-family:ui-monospace,Consolas,monospace}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <span class="badge">VERIFICACIÓN</span>
+    <h1>Certificado · Viaje Interior</h1>
+    <p>Esta página valida el certificado por su identificador.</p>
+    <div class="row" id="resultado">Verificando…</div>
+    <p style="opacity:.75;font-size:12px;margin-top:12px">
+      Modo demo: valida contra <code>localStorage</code> del dispositivo que emitió el PDF.
+      Para validación global, se conecta a una base de datos/API.
+    </p>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const certRaw = params.get("cert");
+    const box = document.getElementById("resultado");
+
+    // Normaliza (por si viene con espacios o caracteres raros)
+    const cert = (certRaw || "").trim();
+
+    if (!cert) {
+      box.innerHTML = "<b class='bad'>FALTA ID</b><br/>No se proporcionó el parámetro <code>cert</code>.";
+      // No lanzamos error: solo detenemos el flujo
+      return;
+    }
+
+    let arr = [];
+    try { arr = JSON.parse(localStorage.getItem("VI_CERTS") || "[]"); } catch {}
+
+    // Lookup directo (compatible con tu registro actual)
+    const found = arr.find(x => String(x.certId || "").trim() === cert);
+
+    if (found) {
+      const fecha = found.fechaISO
+        ? new Date(found.fechaISO).toLocaleDateString("es-MX")
+        : "—";
+
+      box.innerHTML = `
+        <b class="ok">VÁLIDO</b><br/>
+        Certificado: <code>${escapeHtml(cert)}</code><br/>
+        Nombre: <b>${escapeHtml(found.nombre)}</b><br/>
+        Emitido: ${escapeHtml(fecha)}
+      `;
+    } else {
+      box.innerHTML = `
+        <b class="bad">NO VALIDADO</b><br/>
+        El ID <code>${escapeHtml(cert)}</code> no aparece en el registro local de este dispositivo.<br/>
+        <span style="opacity:.8">En producción debe consultarse a una base de datos.</span>
+      `;
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+  </script>
+</body>
+</html>
