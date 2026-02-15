@@ -1,0 +1,211 @@
+/* ====== CAPA ESTELAR FORZADA (INFALIBLE) ====== */
+html, body { height: 100%; }
+
+#bg-estrellas{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 520px at 18% 10%, rgba(202,164,75,.16), transparent 60%),
+    radial-gradient(850px 520px at 85% 18%, rgba(116,72,190,.13), transparent 58%),
+    radial-gradient(1000px 600px at 50% 85%, rgba(40,150,190,.10), transparent 60%),
+    linear-gradient(180deg, #050508 0%, #0b0b10 45%, #050508 100%);
+}
+#bg-estrellas{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, #000010 0%, #000000 70%);
+  overflow: hidden;
+}
+
+/* CAPA WARP */
+#bg-estrellas::before{
+  content:"";
+  position:absolute;
+  width:300%;
+  height:300%;
+  top:-100%;
+  left:-100%;
+  background-image:
+    radial-gradient(2px 8px at 10% 20%, rgba(255,255,255,0.8), transparent 70%),
+    radial-gradient(2px 8px at 30% 50%, rgba(255,255,255,0.7), transparent 70%),
+    radial-gradient(2px 8px at 60% 10%, rgba(255,255,255,0.6), transparent 70%),
+    radial-gradient(2px 8px at 80% 40%, rgba(255,255,255,0.9), transparent 70%),
+    radial-gradient(2px 8px at 50% 80%, rgba(255,255,255,0.7), transparent 70%),
+    radial-gradient(2px 8px at 90% 70%, rgba(255,255,255,0.6), transparent 70%);
+  background-size: 400px 400px;
+  transform: perspective(800px) rotateX(65deg);
+  animation: warp 3s linear infinite;
+  opacity: .7;
+}
+
+@keyframes warp{
+  from{
+    transform: perspective(800px) rotateX(65deg) translateY(0);
+  }
+  to{
+    transform: perspective(800px) rotateX(65deg) translateY(400px);
+  }
+}
+
+/* Todo el contenido encima */
+body > *{
+  position: relative;
+  z-index: 1;
+
+
+}
+
+@keyframes estrellasMove{
+  from { transform: translate(0,0); }
+  to   { transform: translate(-260px,-360px); }
+}
+
+/* Todo el contenido arriba del fondo */
+body > *{
+  position: relative;
+  z-index: 1;
+}
+
+/* ===============================
+   FUENTE MEDIEVAL
+=============================== */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&display=swap');
+
+/* ===============================
+   FONDO ESTELAR PROFUNDO
+=============================== */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Cinzel', serif;
+  background: radial-gradient(ellipse at bottom, #0c0f25 0%, #000000 100%);
+  color: #e6d5a8;
+  overflow-x: hidden;
+}
+
+/* Capa estelar animada */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background-image:
+    radial-gradient(white 1px, transparent 1px),
+    radial-gradient(white 1px, transparent 1px);
+  background-size: 3px 3px, 4px 4px;
+  background-position: 0 0, 50px 80px;
+  opacity: 0.12;
+  animation: estrellas 140s linear infinite;
+  z-index: -1;
+}
+
+@keyframes estrellas {
+  from { transform: translate(0,0); }
+  to { transform: translate(-300px,-400px); }
+}
+
+/* ===============================
+   PANTALLAS GENERALES
+=============================== */
+
+.pantalla {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.oculto {
+  display: none;
+}
+
+/* ===============================
+   TÍTULOS RITUALES
+=============================== */
+
+h1, h2 {
+  color: #f5d27c;
+  text-shadow: 0 0 12px rgba(255, 215, 120, 0.8);
+  margin-bottom: 20px;
+}
+
+/* ===============================
+   BOTONES RITUALES CON BRILLO
+=============================== */
+
+button {
+  background: linear-gradient(145deg, #caa94a, #8f6c24);
+  border: none;
+  padding: 14px 28px;
+  margin: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #1a1a1a;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 0 8px rgba(255, 215, 120, 0.6),
+    inset 0 0 6px rgba(255,255,255,0.4);
+}
+
+button:hover {
+  transform: scale(1.06);
+  box-shadow:
+    0 0 20px rgba(255, 215, 120, 1),
+    inset 0 0 12px rgba(255,255,255,0.6);
+}
+
+/* ===============================
+   PREGUNTAS
+=============================== */
+
+.pregunta h2 {
+  font-size: 22px;
+  margin-bottom: 25px;
+}
+
+.opciones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.opcion-btn {
+  width: 100%;
+  max-width: 520px;
+}
+
+/* ===============================
+   RESULTADO FINAL
+=============================== */
+
+.resultado h2 {
+  font-size: 28px;
+  text-shadow: 0 0 18px rgba(255, 215, 120, 1);
+}
+
+/* ===============================
+   RESPONSIVO
+=============================== */
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 18px;
+  }
+
+  button {
+    width: 90%;
+  }
+}
